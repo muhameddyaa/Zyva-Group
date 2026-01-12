@@ -1,269 +1,415 @@
 /**
- * Home Page - Zyva Group Landing
- * 
- * Design Philosophy: Modern Corporate with Gradient Accents
- * - Brand Colors: Purple to Teal gradient
- * - Three divisions entry point
- * - Professional yet dynamic feel
+ * Zyva Group Home Page
+ * Design: Professional corporate landing with animated sections
+ * Colors: Purple (#6B46C1) to Teal (#14B8A6) gradient
  */
 
 import { motion, useScroll, useTransform } from "framer-motion";
+import { ArrowRight, Building2, Calculator, PartyPopper, ChevronDown } from "lucide-react";
 import { useRef } from "react";
 import { Link } from "wouter";
-import { ArrowRight, Building2, Calculator, Calendar } from "lucide-react";
 
 const divisions = [
   {
     id: "trading",
-    title: "ZYVA INTERNATIONAL",
-    subtitle: "GENERAL TRADING",
-    description: "Premium quality meat, poultry, and rice products sourced from the finest suppliers worldwide.",
+    title: "Zyva General Trading",
+    subtitle: "Premium Food Distribution",
+    description: "Your trusted partner for premium quality meat, poultry, and rice products. We deliver excellence across the Gulf region with our carefully selected range of frozen and fresh products.",
     icon: Building2,
-    href: "/trading",
-    color: "from-[oklch(0.45_0.15_280)] to-[oklch(0.55_0.15_280)]",
-    hoverColor: "group-hover:from-[oklch(0.50_0.15_280)] group-hover:to-[oklch(0.60_0.15_280)]",
+    image: "/images/trading-hero-new.jpg",
+    link: "/trading",
+    color: "from-purple-600 to-purple-800",
+    features: ["Premium Buffalo Meat", "Brazilian Chicken", "Basmati Rice"]
   },
   {
     id: "financial",
-    title: "ZYVA FINANCIAL",
-    subtitle: "SOLUTIONS",
-    description: "Expert accounting, tax consultancy, and financial advisory services for your business success.",
+    title: "Zyva Financial Solutions",
+    subtitle: "We Focus on Your Tomorrow",
+    description: "Comprehensive financial services including accounting, VAT compliance, audit, and business consulting. Let us handle your finances so you can focus on growing your business.",
     icon: Calculator,
-    href: "/financial",
-    color: "from-[oklch(0.55_0.15_230)] to-[oklch(0.65_0.15_185)]",
-    hoverColor: "group-hover:from-[oklch(0.60_0.15_230)] group-hover:to-[oklch(0.70_0.15_185)]",
+    image: "/images/financial-hero.jpg",
+    link: "/financial",
+    color: "from-teal-500 to-teal-700",
+    features: ["Accounting & Bookkeeping", "VAT Services", "Audit & Assurance"]
   },
   {
     id: "events",
-    title: "ZYVA",
-    subtitle: "EVENTS",
-    description: "Creating memorable experiences and exceptional events that leave lasting impressions.",
-    icon: Calendar,
-    href: "/events",
-    color: "from-[oklch(0.65_0.15_185)] to-[oklch(0.55_0.12_160)]",
-    hoverColor: "group-hover:from-[oklch(0.70_0.15_185)] group-hover:to-[oklch(0.60_0.12_160)]",
-  },
+    title: "Zyva Events",
+    subtitle: "Creating Unforgettable Moments",
+    description: "From corporate gatherings to grand celebrations, we craft extraordinary experiences that leave lasting impressions. Coming soon to transform your events.",
+    icon: PartyPopper,
+    image: "/images/events-hero.jpg",
+    link: "/events",
+    color: "from-purple-500 to-teal-500",
+    features: ["Corporate Events", "Private Celebrations", "Brand Activations"]
+  }
 ];
 
-function DivisionCard({ division, index }: { division: typeof divisions[0]; index: number }) {
-  const Icon = division.icon;
-  
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 50 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, delay: 0.3 + index * 0.15 }}
-    >
-      <Link href={division.href}>
-        <motion.div
-          whileHover={{ y: -10, scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-          className="group relative h-full cursor-pointer"
-        >
-          {/* Card */}
-          <div className={`relative overflow-hidden rounded-2xl bg-gradient-to-br ${division.color} ${division.hoverColor} p-8 md:p-10 h-full min-h-[320px] flex flex-col justify-between transition-all duration-500`}>
-            {/* Background Pattern */}
-            <div className="absolute inset-0 opacity-10">
-              <div className="absolute top-0 right-0 w-64 h-64 bg-white rounded-full blur-3xl translate-x-1/2 -translate-y-1/2" />
-              <div className="absolute bottom-0 left-0 w-48 h-48 bg-white rounded-full blur-3xl -translate-x-1/2 translate-y-1/2" />
-            </div>
-            
-            {/* Icon */}
-            <div className="relative z-10">
-              <motion.div
-                initial={{ scale: 1 }}
-                whileHover={{ scale: 1.1, rotate: 5 }}
-                className="w-16 h-16 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center mb-6"
-              >
-                <Icon className="w-8 h-8 text-white" />
-              </motion.div>
-            </div>
-            
-            {/* Content */}
-            <div className="relative z-10">
-              <h3 className="text-display text-3xl md:text-4xl text-white mb-1">
-                {division.title}
-              </h3>
-              <h4 className="text-display text-2xl md:text-3xl text-white/80 mb-4">
-                {division.subtitle}
-              </h4>
-              <p className="text-white/70 text-sm md:text-base leading-relaxed mb-6">
-                {division.description}
-              </p>
-              
-              {/* CTA */}
-              <div className="flex items-center gap-2 text-white font-medium">
-                <span className="text-sm uppercase tracking-wider">Explore</span>
-                <motion.div
-                  initial={{ x: 0 }}
-                  whileHover={{ x: 5 }}
-                  className="group-hover:translate-x-2 transition-transform"
-                >
-                  <ArrowRight className="w-4 h-4" />
-                </motion.div>
-              </div>
-            </div>
-            
-            {/* Hover Glow */}
-            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-              <div className="absolute inset-0 bg-white/5" />
-            </div>
-          </div>
-        </motion.div>
-      </Link>
-    </motion.div>
-  );
-}
+const stats = [
+  { value: "10+", label: "Years Experience" },
+  { value: "500+", label: "Happy Clients" },
+  { value: "3", label: "Business Divisions" },
+  { value: "24/7", label: "Support Available" }
+];
 
 export default function Home() {
-  const containerRef = useRef<HTMLDivElement>(null);
+  const heroRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end start"],
+    target: heroRef,
+    offset: ["start start", "end start"]
   });
 
-  const backgroundY = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
+  const heroY = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
+  const heroOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
 
   return (
-    <div ref={containerRef} className="min-h-screen bg-background text-foreground overflow-hidden">
-      {/* Background Elements */}
-      <motion.div style={{ y: backgroundY }} className="fixed inset-0 pointer-events-none">
-        <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-[oklch(0.45_0.15_280)]/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-[oklch(0.65_0.15_185)]/10 rounded-full blur-3xl" />
-      </motion.div>
+    <div className="min-h-screen bg-slate-950 text-white overflow-hidden">
+      {/* Hero Section */}
+      <section ref={heroRef} className="relative h-screen flex items-center justify-center overflow-hidden">
+        {/* Animated Background */}
+        <motion.div 
+          className="absolute inset-0 z-0"
+          style={{ y: heroY }}
+        >
+          <div className="absolute inset-0 bg-gradient-to-br from-purple-900/90 via-slate-950 to-teal-900/90" />
+          <motion.div
+            className="absolute inset-0 opacity-30"
+            animate={{
+              background: [
+                "radial-gradient(circle at 20% 50%, rgba(107, 70, 193, 0.4) 0%, transparent 50%)",
+                "radial-gradient(circle at 80% 50%, rgba(20, 184, 166, 0.4) 0%, transparent 50%)",
+                "radial-gradient(circle at 50% 80%, rgba(107, 70, 193, 0.4) 0%, transparent 50%)",
+                "radial-gradient(circle at 20% 50%, rgba(107, 70, 193, 0.4) 0%, transparent 50%)"
+              ]
+            }}
+            transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+          />
+          {/* Floating Particles */}
+          {[...Array(20)].map((_, i) => (
+            <motion.div
+              key={i}
+              className="absolute w-2 h-2 rounded-full bg-white/10"
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`
+              }}
+              animate={{
+                y: [0, -30, 0],
+                opacity: [0.2, 0.5, 0.2]
+              }}
+              transition={{
+                duration: 3 + Math.random() * 2,
+                repeat: Infinity,
+                delay: Math.random() * 2
+              }}
+            />
+          ))}
+        </motion.div>
 
-      {/* Main Content */}
-      <div className="relative z-10">
-        {/* Hero Section */}
-        <section className="min-h-screen flex flex-col justify-center items-center px-6 py-20">
+        {/* Hero Content */}
+        <motion.div 
+          className="relative z-10 text-center px-4 max-w-6xl mx-auto"
+          style={{ opacity: heroOpacity }}
+        >
           {/* Logo */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8 }}
+            initial={{ scale: 0, rotate: -180 }}
+            animate={{ scale: 1, rotate: 0 }}
+            transition={{ duration: 0.8, type: "spring" }}
             className="mb-8"
           >
             <img 
-              src="/images/zyva-logo.png" 
-              alt="Zyva Group Logo" 
-              className="w-32 h-32 md:w-40 md:h-40 object-contain"
+              src="/images/ZYVA-PNG.png" 
+              alt="Zyva Group" 
+              className="w-32 h-32 mx-auto drop-shadow-2xl"
             />
           </motion.div>
 
           {/* Title */}
-          <div className="text-center mb-6">
-            <motion.h1
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-display text-6xl md:text-8xl lg:text-9xl text-white mb-2"
-            >
-              ZYVA
-            </motion.h1>
-            <motion.h2
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="text-display text-4xl md:text-5xl lg:text-6xl text-zyva-gradient"
-            >
-              GROUP
-            </motion.h2>
-          </div>
+          <motion.h1
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+            className="text-6xl md:text-8xl font-bold mb-6"
+          >
+            <span className="bg-gradient-to-r from-purple-400 via-white to-teal-400 bg-clip-text text-transparent">
+              ZYVA GROUP
+            </span>
+          </motion.h1>
 
           {/* Tagline */}
           <motion.p
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="text-white/60 text-lg md:text-xl text-center max-w-2xl mb-16"
+            transition={{ duration: 0.8, delay: 0.5 }}
+            className="text-xl md:text-2xl text-slate-300 mb-8 max-w-2xl mx-auto"
           >
             Providing Innovative Solutions for Businesses
           </motion.p>
 
-          {/* Division Cards */}
-          <div className="w-full max-w-6xl">
-            <div className="grid md:grid-cols-3 gap-6 md:gap-8">
-              {divisions.map((division, index) => (
-                <DivisionCard key={division.id} division={division} index={index} />
-              ))}
-            </div>
-          </div>
-
-          {/* Scroll Indicator */}
+          {/* Subtitle */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 1.5 }}
-            className="absolute bottom-8 left-1/2 -translate-x-1/2"
+            transition={{ duration: 0.8, delay: 0.7 }}
+            className="flex flex-wrap justify-center gap-4 text-sm text-slate-400 mb-12"
           >
-            <motion.div
-              animate={{ y: [0, 10, 0] }}
-              transition={{ duration: 2, repeat: Infinity }}
-              className="text-white/30 text-xs uppercase tracking-widest"
-            >
-              Scroll for more
-            </motion.div>
+            <span className="px-4 py-2 rounded-full border border-purple-500/30 bg-purple-500/10">
+              General Trading
+            </span>
+            <span className="px-4 py-2 rounded-full border border-teal-500/30 bg-teal-500/10">
+              Financial Solutions
+            </span>
+            <span className="px-4 py-2 rounded-full border border-purple-500/30 bg-purple-500/10">
+              Events Management
+            </span>
           </motion.div>
-        </section>
 
-        {/* Contact Section */}
-        <section className="py-20 px-6 bg-[oklch(0.08_0.015_260)]">
-          <div className="max-w-4xl mx-auto text-center">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
+          {/* CTA */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.9 }}
+          >
+            <a 
+              href="#divisions"
+              className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-purple-600 to-teal-500 rounded-full text-lg font-semibold hover:shadow-lg hover:shadow-purple-500/25 transition-all duration-300 hover:scale-105"
             >
-              <h3 className="text-display text-4xl md:text-5xl text-white mb-6">
-                GET IN <span className="text-zyva-gradient">TOUCH</span>
-              </h3>
-              <p className="text-white/60 mb-8">
-                Ready to work with us? Contact our team for inquiries and assistance.
-              </p>
-              
-              <div className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-12">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-zyva-gradient flex items-center justify-center">
-                    <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                    </svg>
-                  </div>
-                  <span className="text-white">contact@zyvasolutions.com</span>
-                </div>
-                
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-zyva-gradient flex items-center justify-center">
-                    <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                    </svg>
-                  </div>
-                  <span className="text-white">+971 50 901 1323</span>
-                </div>
-              </div>
-              
-              <div className="mt-8 text-white/50 text-sm">
-                Office no. 1152, Tower 2, Mazyad Mall, Mussafah, Abu Dhabi, UAE
-              </div>
-            </motion.div>
-          </div>
-        </section>
+              Explore Our Divisions
+              <ArrowRight className="w-5 h-5" />
+            </a>
+          </motion.div>
+        </motion.div>
 
-        {/* Footer */}
-        <footer className="py-8 px-6 border-t border-[oklch(0.20_0.02_260)]">
-          <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-            <div className="flex items-center gap-3">
-              <img src="/images/zyva-logo.png" alt="Zyva" className="w-8 h-8" />
-              <span className="text-white/50 text-sm">© 2024 Zyva Group. All rights reserved.</span>
+        {/* Scroll Indicator */}
+        <motion.div
+          className="absolute bottom-8 left-1/2 -translate-x-1/2"
+          animate={{ y: [0, 10, 0] }}
+          transition={{ duration: 2, repeat: Infinity }}
+        >
+          <ChevronDown className="w-8 h-8 text-white/50" />
+        </motion.div>
+      </section>
+
+      {/* Stats Section */}
+      <section className="py-16 bg-slate-900/50 border-y border-white/5">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            {stats.map((stat, index) => (
+              <motion.div
+                key={stat.label}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="text-center"
+              >
+                <div className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-purple-400 to-teal-400 bg-clip-text text-transparent mb-2">
+                  {stat.value}
+                </div>
+                <div className="text-slate-400 text-sm uppercase tracking-wider">
+                  {stat.label}
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Divisions Section */}
+      <section id="divisions" className="py-24">
+        <div className="container mx-auto px-4">
+          {/* Section Header */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl md:text-5xl font-bold mb-4">
+              Our <span className="bg-gradient-to-r from-purple-400 to-teal-400 bg-clip-text text-transparent">Divisions</span>
+            </h2>
+            <p className="text-slate-400 max-w-2xl mx-auto">
+              Three specialized divisions working together to provide comprehensive business solutions
+            </p>
+          </motion.div>
+
+          {/* Division Cards */}
+          <div className="space-y-32">
+            {divisions.map((division, index) => (
+              <motion.div
+                key={division.id}
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 0.8 }}
+                className={`flex flex-col ${index % 2 === 0 ? 'lg:flex-row' : 'lg:flex-row-reverse'} gap-12 items-center`}
+              >
+                {/* Image */}
+                <div className="w-full lg:w-1/2 relative group">
+                  <motion.div
+                    whileHover={{ scale: 1.02 }}
+                    transition={{ duration: 0.3 }}
+                    className="relative overflow-hidden rounded-2xl"
+                  >
+                    <img
+                      src={division.image}
+                      alt={division.title}
+                      className="w-full h-80 object-cover"
+                    />
+                    <div className={`absolute inset-0 bg-gradient-to-t ${division.color} opacity-60 group-hover:opacity-40 transition-opacity duration-300`} />
+                    
+                    {/* Icon Overlay */}
+                    <div className="absolute top-6 left-6">
+                      <div className="w-16 h-16 rounded-xl bg-white/10 backdrop-blur-sm flex items-center justify-center">
+                        <division.icon className="w-8 h-8 text-white" />
+                      </div>
+                    </div>
+                  </motion.div>
+                </div>
+
+                {/* Content */}
+                <div className="w-full lg:w-1/2 space-y-6">
+                  <div>
+                    <motion.span 
+                      className="text-sm uppercase tracking-wider text-teal-400"
+                      initial={{ opacity: 0, x: -20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: 0.2 }}
+                    >
+                      {division.subtitle}
+                    </motion.span>
+                    <motion.h3 
+                      className="text-3xl md:text-4xl font-bold mt-2"
+                      initial={{ opacity: 0, x: -20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: 0.3 }}
+                    >
+                      {division.title}
+                    </motion.h3>
+                  </div>
+
+                  <motion.p 
+                    className="text-slate-400 text-lg leading-relaxed"
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.4 }}
+                  >
+                    {division.description}
+                  </motion.p>
+
+                  {/* Features */}
+                  <motion.div 
+                    className="flex flex-wrap gap-3"
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.5 }}
+                  >
+                    {division.features.map((feature) => (
+                      <span 
+                        key={feature}
+                        className="px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm text-slate-300"
+                      >
+                        {feature}
+                      </span>
+                    ))}
+                  </motion.div>
+
+                  {/* CTA Button */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.6 }}
+                  >
+                    <Link href={division.link}>
+                      <motion.span
+                        whileHover={{ x: 5 }}
+                        className={`inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r ${division.color} text-white font-semibold cursor-pointer hover:shadow-lg transition-shadow duration-300`}
+                      >
+                        {division.id === 'events' ? 'Coming Soon' : 'Learn More'}
+                        <ArrowRight className="w-5 h-5" />
+                      </motion.span>
+                    </Link>
+                  </motion.div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-24 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-purple-900/50 to-teal-900/50" />
+        <motion.div
+          className="absolute inset-0"
+          animate={{
+            background: [
+              "radial-gradient(circle at 0% 50%, rgba(107, 70, 193, 0.3) 0%, transparent 50%)",
+              "radial-gradient(circle at 100% 50%, rgba(20, 184, 166, 0.3) 0%, transparent 50%)",
+              "radial-gradient(circle at 0% 50%, rgba(107, 70, 193, 0.3) 0%, transparent 50%)"
+            ]
+          }}
+          transition={{ duration: 8, repeat: Infinity }}
+        />
+        
+        <div className="container mx-auto px-4 relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center max-w-3xl mx-auto"
+          >
+            <h2 className="text-4xl md:text-5xl font-bold mb-6">
+              Ready to <span className="bg-gradient-to-r from-purple-400 to-teal-400 bg-clip-text text-transparent">Grow</span> Your Business?
+            </h2>
+            <p className="text-slate-300 text-lg mb-8">
+              Partner with Zyva Group and experience the difference. Our team of experts is ready to help you achieve your business goals.
+            </p>
+            <div className="flex flex-wrap justify-center gap-4">
+              <Link href="/financial">
+                <span className="inline-flex items-center gap-2 px-8 py-4 bg-white text-slate-900 rounded-full font-semibold hover:bg-slate-100 transition-colors cursor-pointer">
+                  Get Started
+                  <ArrowRight className="w-5 h-5" />
+                </span>
+              </Link>
+              <a 
+                href="tel:+971557372006"
+                className="inline-flex items-center gap-2 px-8 py-4 border border-white/30 rounded-full font-semibold hover:bg-white/10 transition-colors"
+              >
+                Call Us Now
+              </a>
             </div>
-            <div className="flex gap-6">
-              <Link href="/trading" className="text-white/50 hover:text-white text-sm transition-colors">Trading</Link>
-              <Link href="/financial" className="text-white/50 hover:text-white text-sm transition-colors">Financial</Link>
-              <Link href="/events" className="text-white/50 hover:text-white text-sm transition-colors">Events</Link>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="py-12 bg-slate-950 border-t border-white/5">
+        <div className="container mx-auto px-4">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+            <div className="flex items-center gap-3">
+              <img src="/images/ZYVA-PNG.png" alt="Zyva" className="w-10 h-10" />
+              <span className="text-xl font-bold">Zyva Group</span>
+            </div>
+            
+            <div className="flex flex-wrap justify-center gap-6 text-slate-400">
+              <Link href="/trading" className="hover:text-white transition-colors">Trading</Link>
+              <Link href="/financial" className="hover:text-white transition-colors">Financial</Link>
+              <Link href="/events" className="hover:text-white transition-colors">Events</Link>
+            </div>
+
+            <div className="text-slate-500 text-sm">
+              © 2024 Zyva Group. All rights reserved.
             </div>
           </div>
-        </footer>
-      </div>
+        </div>
+      </footer>
     </div>
   );
 }

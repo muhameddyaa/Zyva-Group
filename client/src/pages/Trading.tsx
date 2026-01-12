@@ -187,7 +187,7 @@ export default function Trading() {
               </motion.div>
             </Link>
             <div className="flex items-center gap-3">
-              <img src="/images/zyva-logo.png" alt="Zyva" className="w-8 h-8" />
+              <img src="/images/ZYVA-PNG.png" alt="Zyva" className="w-8 h-8" />
               <span className="text-white font-semibold">Zyva Trading</span>
             </div>
           </div>
@@ -350,7 +350,7 @@ export default function Trading() {
       <footer className="py-8 px-6 border-t border-[oklch(0.20_0.02_260)]">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <img src="/images/zyva-logo.png" alt="Zyva" className="w-8 h-8" />
+            <img src="/images/ZYVA-PNG.png" alt="Zyva" className="w-8 h-8" />
             <span className="text-white/50 text-sm">© 2024 Zyva Group. All rights reserved.</span>
           </div>
           <Link href="/" className="text-white/50 hover:text-white text-sm transition-colors">

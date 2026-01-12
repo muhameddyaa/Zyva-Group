@@ -4,9 +4,9 @@
  * Colors: Purple (#6B46C1) to Teal (#14B8A6) gradient
  */
 
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, useInView, animate } from "framer-motion";
 import { ArrowRight, Building2, Calculator, PartyPopper, ChevronDown } from "lucide-react";
-import { useRef } from "react";
+import { useRef, useEffect, useState } from "react";
 import { Link } from "wouter";
 
 const divisions = [
@@ -46,11 +46,96 @@ const divisions = [
 ];
 
 const stats = [
-  { value: "10+", label: "Years Experience" },
-  { value: "500+", label: "Happy Clients" },
-  { value: "3", label: "Business Divisions" },
-  { value: "24/7", label: "Support Available" }
+  { value: 10, suffix: "+", label: "Years Experience" },
+  { value: 500, suffix: "+", label: "Happy Clients" },
+  { value: 3, suffix: "", label: "Business Divisions" },
+  { value: 24, suffix: "/7", label: "Support Available" }
 ];
+
+// Counter Animation Component - Counts from 0 to target value
+function AnimatedCounter({ value, suffix, duration = 2.5 }: { value: number; suffix: string; duration?: number }) {
+  const [count, setCount] = useState(0);
+  const [hasAnimated, setHasAnimated] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+  const isInView = useInView(ref, { once: true, amount: 0.5 });
+
+  useEffect(() => {
+    if (isInView && !hasAnimated) {
+      setHasAnimated(true);
+      let startTime: number;
+      let animationFrame: number;
+      
+      const animateCount = (timestamp: number) => {
+        if (!startTime) startTime = timestamp;
+        const progress = Math.min((timestamp - startTime) / (duration * 1000), 1);
+        
+        // Easing function for smooth animation
+        const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+        const currentCount = Math.floor(easeOutQuart * value);
+        
+        setCount(currentCount);
+        
+        if (progress < 1) {
+          animationFrame = requestAnimationFrame(animateCount);
+        } else {
+          setCount(value);
+        }
+      };
+      
+      animationFrame = requestAnimationFrame(animateCount);
+      
+      return () => {
+        if (animationFrame) {
+          cancelAnimationFrame(animationFrame);
+        }
+      };
+    }
+  }, [isInView, value, duration, hasAnimated]);
+
+  return (
+    <motion.div 
+      ref={ref} 
+      className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-purple-400 to-teal-400 bg-clip-text text-transparent mb-2"
+      initial={{ scale: 0.5, opacity: 0 }}
+      animate={isInView ? { scale: 1, opacity: 1 } : { scale: 0.5, opacity: 0 }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
+    >
+      {count}{suffix}
+    </motion.div>
+  );
+}
+
+// Animated Logo Component
+function AnimatedLogo() {
+  return (
+    <motion.div
+      initial={{ scale: 0, rotate: -180 }}
+      animate={{ scale: 1, rotate: 0 }}
+      transition={{ duration: 0.8, type: "spring" }}
+      className="mb-8"
+    >
+      <motion.img 
+        src="/images/ZYVA-PNG.png" 
+        alt="Zyva Group" 
+        className="w-32 h-32 mx-auto drop-shadow-2xl"
+        animate={{
+          rotateY: [0, 360],
+        }}
+        transition={{
+          duration: 8,
+          repeat: Infinity,
+          ease: "linear"
+        }}
+        whileHover={{
+          scale: 1.1,
+          rotateY: 0,
+          transition: { duration: 0.3 }
+        }}
+        style={{ transformStyle: "preserve-3d" }}
+      />
+    </motion.div>
+  );
+}
 
 export default function Home() {
   const heroRef = useRef<HTMLDivElement>(null);
@@ -61,6 +146,11 @@ export default function Home() {
 
   const heroY = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
   const heroOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+
+  // Scroll to top when navigating to divisions
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   return (
     <div className="min-h-screen bg-slate-950 text-white overflow-hidden">
@@ -111,19 +201,8 @@ export default function Home() {
           className="relative z-10 text-center px-4 max-w-6xl mx-auto"
           style={{ opacity: heroOpacity }}
         >
-          {/* Logo */}
-          <motion.div
-            initial={{ scale: 0, rotate: -180 }}
-            animate={{ scale: 1, rotate: 0 }}
-            transition={{ duration: 0.8, type: "spring" }}
-            className="mb-8"
-          >
-            <img 
-              src="/images/ZYVA-PNG.png" 
-              alt="Zyva Group" 
-              className="w-32 h-32 mx-auto drop-shadow-2xl"
-            />
-          </motion.div>
+          {/* Animated Logo */}
+          <AnimatedLogo />
 
           {/* Title */}
           <motion.h1
@@ -154,15 +233,24 @@ export default function Home() {
             transition={{ duration: 0.8, delay: 0.7 }}
             className="flex flex-wrap justify-center gap-4 text-sm text-slate-400 mb-12"
           >
-            <span className="px-4 py-2 rounded-full border border-purple-500/30 bg-purple-500/10">
+            <motion.span 
+              className="px-4 py-2 rounded-full border border-purple-500/30 bg-purple-500/10"
+              whileHover={{ scale: 1.05, borderColor: "rgba(168, 85, 247, 0.6)" }}
+            >
               General Trading
-            </span>
-            <span className="px-4 py-2 rounded-full border border-teal-500/30 bg-teal-500/10">
+            </motion.span>
+            <motion.span 
+              className="px-4 py-2 rounded-full border border-teal-500/30 bg-teal-500/10"
+              whileHover={{ scale: 1.05, borderColor: "rgba(20, 184, 166, 0.6)" }}
+            >
               Financial Solutions
-            </span>
-            <span className="px-4 py-2 rounded-full border border-purple-500/30 bg-purple-500/10">
+            </motion.span>
+            <motion.span 
+              className="px-4 py-2 rounded-full border border-purple-500/30 bg-purple-500/10"
+              whileHover={{ scale: 1.05, borderColor: "rgba(168, 85, 247, 0.6)" }}
+            >
               Events Management
-            </span>
+            </motion.span>
           </motion.div>
 
           {/* CTA */}
@@ -204,9 +292,7 @@ export default function Home() {
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 className="text-center"
               >
-                <div className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-purple-400 to-teal-400 bg-clip-text text-transparent mb-2">
-                  {stat.value}
-                </div>
+                <AnimatedCounter value={stat.value} suffix={stat.suffix} />
                 <div className="text-slate-400 text-sm uppercase tracking-wider">
                   {stat.label}
                 </div>
@@ -326,7 +412,7 @@ export default function Home() {
                     viewport={{ once: true }}
                     transition={{ delay: 0.6 }}
                   >
-                    <Link href={division.link}>
+                    <Link href={division.link} onClick={scrollToTop}>
                       <motion.span
                         whileHover={{ x: 5 }}
                         className={`inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r ${division.color} text-white font-semibold cursor-pointer hover:shadow-lg transition-shadow duration-300`}
@@ -372,7 +458,7 @@ export default function Home() {
               Partner with Zyva Group and experience the difference. Our team of experts is ready to help you achieve your business goals.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
-              <Link href="/financial">
+              <Link href="/financial" onClick={scrollToTop}>
                 <span className="inline-flex items-center gap-2 px-8 py-4 bg-white text-slate-900 rounded-full font-semibold hover:bg-slate-100 transition-colors cursor-pointer">
                   Get Started
                   <ArrowRight className="w-5 h-5" />
@@ -394,14 +480,20 @@ export default function Home() {
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row justify-between items-center gap-6">
             <div className="flex items-center gap-3">
-              <img src="/images/ZYVA-PNG.png" alt="Zyva" className="w-10 h-10" />
+              <motion.img 
+                src="/images/ZYVA-PNG.png" 
+                alt="Zyva" 
+                className="w-10 h-10"
+                whileHover={{ rotate: 360 }}
+                transition={{ duration: 0.5 }}
+              />
               <span className="text-xl font-bold">Zyva Group</span>
             </div>
             
             <div className="flex flex-wrap justify-center gap-6 text-slate-400">
-              <Link href="/trading" className="hover:text-white transition-colors">Trading</Link>
-              <Link href="/financial" className="hover:text-white transition-colors">Financial</Link>
-              <Link href="/events" className="hover:text-white transition-colors">Events</Link>
+              <Link href="/trading" onClick={scrollToTop} className="hover:text-white transition-colors">Trading</Link>
+              <Link href="/financial" onClick={scrollToTop} className="hover:text-white transition-colors">Financial</Link>
+              <Link href="/events" onClick={scrollToTop} className="hover:text-white transition-colors">Events</Link>
             </div>
 
             <div className="text-slate-500 text-sm">

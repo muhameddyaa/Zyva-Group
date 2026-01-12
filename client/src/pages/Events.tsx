@@ -19,55 +19,6 @@ const eventTypes = [
   { icon: "🎤", title: "Conferences", description: "Knowledge sharing events" }
 ];
 
-function CountdownTimer() {
-  const [timeLeft, setTimeLeft] = useState({
-    days: 0,
-    hours: 0,
-    minutes: 0,
-    seconds: 0
-  });
-
-  useEffect(() => {
-    // Set launch date to 3 months from now
-    const launchDate = new Date();
-    launchDate.setMonth(launchDate.getMonth() + 3);
-
-    const timer = setInterval(() => {
-      const now = new Date().getTime();
-      const distance = launchDate.getTime() - now;
-
-      setTimeLeft({
-        days: Math.floor(distance / (1000 * 60 * 60 * 24)),
-        hours: Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
-        minutes: Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)),
-        seconds: Math.floor((distance % (1000 * 60)) / 1000)
-      });
-    }, 1000);
-
-    return () => clearInterval(timer);
-  }, []);
-
-  return (
-    <div className="flex justify-center gap-4 md:gap-8">
-      {Object.entries(timeLeft).map(([key, value]) => (
-        <motion.div
-          key={key}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="text-center"
-        >
-          <div className="w-20 h-20 md:w-28 md:h-28 rounded-2xl bg-gradient-to-br from-purple-600/20 to-teal-500/20 border border-white/10 flex items-center justify-center mb-2">
-            <span className="text-3xl md:text-5xl font-bold bg-gradient-to-r from-purple-400 to-teal-400 bg-clip-text text-transparent">
-              {value.toString().padStart(2, '0')}
-            </span>
-          </div>
-          <span className="text-slate-400 text-sm uppercase tracking-wider">{key}</span>
-        </motion.div>
-      ))}
-    </div>
-  );
-}
 
 export default function Events() {
   const heroRef = useRef<HTMLDivElement>(null);
@@ -193,15 +144,6 @@ export default function Events() {
             Something amazing is on the way.
           </motion.p>
 
-          {/* Countdown */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.7 }}
-            className="mb-16"
-          >
-            <CountdownTimer />
-          </motion.div>
 
           {/* Email Signup */}
           <motion.div

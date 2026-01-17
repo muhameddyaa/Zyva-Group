@@ -53,54 +53,51 @@ const stats = [
 ];
 
 // Counter Animation Component - Counts from 0 to target value
-function AnimatedCounter({ value, suffix, duration = 2.5 }: { value: number; suffix: string; duration?: number }) {
-  const [count, setCount] = useState(0);
-  const [hasAnimated, setHasAnimated] = useState(false);
+function AnimatedCounter({ value, suffix, duration = 2 }: { value: number; suffix: string; duration?: number }) {
+  const [displayValue, setDisplayValue] = useState(0);
   const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, amount: 0.5 });
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const hasStarted = useRef(false);
 
   useEffect(() => {
-    if (isInView && !hasAnimated) {
-      setHasAnimated(true);
-      let startTime: number;
-      let animationFrame: number;
+    if (isInView && !hasStarted.current) {
+      hasStarted.current = true;
       
-      const animateCount = (timestamp: number) => {
-        if (!startTime) startTime = timestamp;
-        const progress = Math.min((timestamp - startTime) / (duration * 1000), 1);
+      const startTime = Date.now();
+      const endTime = startTime + duration * 1000;
+      
+      const updateCounter = () => {
+        const now = Date.now();
+        const remaining = Math.max(endTime - now, 0);
+        const progress = 1 - remaining / (duration * 1000);
         
-        // Easing function for smooth animation
-        const easeOutQuart = 1 - Math.pow(1 - progress, 4);
-        const currentCount = Math.floor(easeOutQuart * value);
+        // Easing function
+        const eased = 1 - Math.pow(1 - progress, 3);
+        const current = Math.round(eased * value);
         
-        setCount(currentCount);
+        setDisplayValue(current);
         
-        if (progress < 1) {
-          animationFrame = requestAnimationFrame(animateCount);
+        if (remaining > 0) {
+          requestAnimationFrame(updateCounter);
         } else {
-          setCount(value);
+          setDisplayValue(value);
         }
       };
       
-      animationFrame = requestAnimationFrame(animateCount);
-      
-      return () => {
-        if (animationFrame) {
-          cancelAnimationFrame(animationFrame);
-        }
-      };
+      requestAnimationFrame(updateCounter);
     }
-  }, [isInView, value, duration, hasAnimated]);
+  }, [isInView, value, duration]);
 
   return (
     <motion.div 
       ref={ref} 
       className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-purple-400 to-teal-400 bg-clip-text text-transparent mb-2"
-      initial={{ scale: 0.5, opacity: 0 }}
-      animate={isInView ? { scale: 1, opacity: 1 } : { scale: 0.5, opacity: 0 }}
-      transition={{ duration: 0.5, ease: "easeOut" }}
+      initial={{ scale: 0.8, opacity: 0 }}
+      whileInView={{ scale: 1, opacity: 1 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5 }}
     >
-      {count}{suffix}
+      {displayValue}{suffix}
     </motion.div>
   );
 }

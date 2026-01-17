@@ -363,8 +363,8 @@ export default function Financial() {
                   </div>
                   <div>
                     <h4 className="font-semibold text-white mb-1">Phone</h4>
-                    <p className="text-slate-400">+971 55 737 2006</p>
-                    <p className="text-slate-400">+971 52 300 7862</p>
+                    <p className="text-slate-400">+971 50 901 1323</p>
+                    <p className="text-slate-400">+971 56 553 9356</p>
                   </div>
                 </div>
 
